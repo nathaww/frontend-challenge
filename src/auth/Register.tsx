@@ -1,19 +1,22 @@
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { FaTeamspeak } from "react-icons/fa";
-import { useLogin } from "../redux/useLogin";
+import { useRegister } from "../redux/useRegister";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { Navigate } from "react-router-dom";
 
-const loginSchema = Yup.object().shape({
+const registerSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("E-mail is required"),
   password: Yup.string().min(6, "Too short!").required("Password is required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password')], 'Passwords must match')
+    .required('Confirm password is required'),
 });
 
-export default function LoginPage() {
-  const login = useLogin();
-  const { isPending } = login;
+export default function RegisterPage() {
+  const register = useRegister();
+  const { isPending } = register;
   const user = useSelector((state: RootState) => state.auth.user);
 
   // Redirect if user is already authenticated
@@ -28,25 +31,28 @@ export default function LoginPage() {
           <FaTeamspeak className="w-8 h-8" />
           Team Steam
         </h1>
-        <h2 className="text-center text-2xl md:text-4xl font-extrabold text-[var(--text)]">Sign in</h2>
+        <h2 className="text-center text-2xl md:text-4xl font-extrabold text-[var(--text)]">Sign up</h2>
 
         <div className="text-center text-sm p-4 bg-[var(--primary)] bg-opacity-10 rounded-[var(--radius-md)] text-[var(--text)]">
-          <p>Use these credentials to sign in:</p>
+          <p>Use these credentials to sign up:</p>
           <p className="font-mono mt-2">Email: eve.holt@reqres.in</p>
-          <p className="font-mono">Password: cityslicka</p>
+          <p className="font-mono">Password: pistol</p>
         </div>
 
         <a
-          href="/register"
+          href="/login"
           className="block text-center text-sm underline text-[var(--primary)] hover:opacity-80"
         >
-          Don&rsquo;t have an account? Sign up
+          Already have an account? Sign in
         </a>
 
         <Formik
-          initialValues={{ email: "", password: "" }}
-          validationSchema={loginSchema}
-          onSubmit={(values) => login.mutate(values)}
+          initialValues={{ email: "", password: "", confirmPassword: "" }}
+          validationSchema={registerSchema}
+          onSubmit={(values) => register.mutate({ 
+            email: values.email, 
+            password: values.password 
+          })}
         >
           {({ errors, touched }) => (
             <Form className="mt-8 space-y-6">
@@ -69,10 +75,23 @@ export default function LoginPage() {
                   type="password"
                   className="input w-full"
                   placeholder="Password"
-                  autoComplete="current-password"
+                  autoComplete="new-password"
                 />
                 {errors.password && touched.password && (
                   <p className="text-[var(--error)] text-xs mt-1">{errors.password}</p>
+                )}
+              </div>
+
+              <div>
+                <Field
+                  name="confirmPassword"
+                  type="password"
+                  className="input w-full"
+                  placeholder="Confirm Password"
+                  autoComplete="new-password"
+                />
+                {errors.confirmPassword && touched.confirmPassword && (
+                  <p className="text-[var(--error)] text-xs mt-1">{errors.confirmPassword}</p>
                 )}
               </div>
 
@@ -81,26 +100,11 @@ export default function LoginPage() {
                 disabled={isPending}
                 className="btn btn-primary w-full disabled:opacity-60"
               >
-                {isPending ? "Signing in..." : "Sign in"}
+                {isPending ? "Signing up..." : "Sign up"}
               </button>
             </Form>
           )}
         </Formik>
-
-        <div className="inline-flex items-center justify-center gap-10 w-full pt-4">
-          <a
-            href="/"
-            className="text-center underline text-sm text-[var(--primary)] hover:opacity-80"
-          >
-            Forgot password?
-          </a>
-          <a
-            href="/"
-            className="text-center text-sm text-[var(--primary)] hover:opacity-80"
-          >
-            Verify email
-          </a>
-        </div>
       </div>
     </div>
   );

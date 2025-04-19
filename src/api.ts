@@ -18,3 +18,6 @@ export const getUsers = (page: number = 1) =>
 
 export const getUser = (id: number) =>
   api.get(`/users/${id}`).then(res => res.data);
+
+export const register = (data: { email: string; password: string }) =>
+  api.post('/register', data).then(res => res.data);
