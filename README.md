@@ -1,4 +1,4 @@
-# Team Steam - Frontend Challenge
+# Till's SaaS Team - Frontend Challenge
 
 A modern React application for team management and authentication, built with React, TypeScript, and Vite.
 
