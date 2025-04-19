@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import Login from "./auth/Login";
 import Dashboard from "./pages/Dashboard";
-import Users from "./pages/Users";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "./context/ThemeContext";
 import Navbar from "./components/Navbar";
@@ -28,14 +27,6 @@ function AppContent() {
             element={
               <ProtectedRoute>
                 <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/user"
-            element={
-              <ProtectedRoute>
-                <Users />
               </ProtectedRoute>
             }
           />
