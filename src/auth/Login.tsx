@@ -31,9 +31,9 @@ export default function LoginPage() {
         <h2 className="text-center text-2xl md:text-4xl font-extrabold text-[var(--text)]">Sign in</h2>
 
         <div className="text-center text-sm p-4 bg-[var(--primary)] bg-opacity-10 rounded-[var(--radius-md)] text-[var(--text)]">
-          <p>Use these credentials to sign in:</p>
-          <p className="font-mono mt-2">Email: eve.holt@reqres.in</p>
-          <p className="font-mono">Password: cityslicka</p>
+          <p className="text-white">Use these credentials to sign in:</p>
+          <p className="font-mono text-white mt-2">Email: eve.holt@reqres.in</p>
+          <p className="font-mono text-white">Password: cityslicka</p>
         </div>
 
         <a
